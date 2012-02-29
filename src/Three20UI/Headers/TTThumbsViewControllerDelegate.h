@@ -31,5 +31,8 @@
 
 - (BOOL)thumbsViewController: (TTThumbsViewController*)controller
        shouldNavigateToPhoto: (id<TTPhoto>)photo;
+- (BOOL)thumbsViewController: (TTThumbsViewController*)controller
+       shouldNavigateToPhoto: (id<TTPhoto>)photo
+       fromView:(UIView*)view;
 
 @end

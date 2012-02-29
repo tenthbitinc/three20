@@ -18,7 +18,13 @@
 #import "Three20UI/TTButton.h"
 
 @interface TTThumbView : TTButton
-
+{
+    UIView *videoIconStrip_;
+    UIImageView *videoIconImage_;
+    UILabel *videoIconLabel_;
+}
 @property (nonatomic, copy) NSString* thumbURL;
+
+-(void) setVideo:(BOOL) isVideo withTime:(NSTimeInterval) videoTime;
 
 @end

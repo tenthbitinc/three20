@@ -20,6 +20,9 @@
 #import "Three20Style/TTGlobalStyle.h"
 #import "Three20Style/TTDefaultStyleSheet.h"
 
+// Network
+#import "Three20Network/TTGlobalNetwork.h"
+#import "Three20Network/TTURLCache.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -36,11 +39,40 @@
     self.clipsToBounds = YES;
 
     [self setStylesWithSelector:@"thumbView:"];
+
+    UIViewAutoresizing lblMask,stripMask;
+    CGRect containerRect = CGRectMake(0, frame.size.height-16, frame.size.width, 16);
+    videoIconStrip_ = [[UIView alloc] initWithFrame:containerRect];
+    videoIconStrip_.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.5];
+    videoIconStrip_.userInteractionEnabled = NO;
+    stripMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
+    videoIconStrip_.autoresizingMask = stripMask;
+    UIImage *cameraThumbnail = TTIMAGE(@"bundle://Three20.bundle/images/cameraThumbnailIcon.png");
+    videoIconImage_ = [[UIImageView alloc] initWithImage:cameraThumbnail];
+    videoIconImage_.center = CGPointMake(11, 8);
+    videoIconLabel_ = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, frame.size.width-7, 16)];
+    lblMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleWidth;
+    videoIconLabel_.autoresizingMask = lblMask;
+    videoIconLabel_.backgroundColor = [UIColor clearColor];
+    videoIconLabel_.textAlignment = UITextAlignmentRight;
+            videoIconLabel_.font = [UIFont boldSystemFontOfSize:11];
+    videoIconLabel_.textColor = [UIColor whiteColor];
+    [videoIconStrip_ addSubview:videoIconImage_];
+    [videoIconStrip_ addSubview:videoIconLabel_];
+    [self addSubview:videoIconStrip_];
   }
 
   return self;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+-(void) dealloc
+{
+    [videoIconStrip_ release];
+    [videoIconImage_ release];
+    [videoIconLabel_ release];
+    [super dealloc];
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -59,5 +91,21 @@
   [self setImage:URL forState:UIControlStateNormal];
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+-(void) setVideo:(BOOL) isVideo withTime:(NSTimeInterval) videoTime {
+    if (!isVideo) {
+        videoIconStrip_.hidden = YES;
+        return;
+    }
+    videoIconStrip_.hidden = NO;
+    NSInteger videoTimeInt = videoTime;
+    if (videoTime) {
+        NSUInteger minutes = videoTimeInt/60;
+        NSUInteger seconds = videoTimeInt%60;
+        videoIconLabel_.text = [NSString stringWithFormat:@"%d:%02d",minutes,seconds];
+    }else{
+        videoIconLabel_.text = @"";
+    }
+}
 
 @end

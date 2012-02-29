@@ -49,4 +49,8 @@
  */
 - (NSString*)URLForVersion:(TTPhotoVersion)version;
 
+@optional
+- (BOOL) isVideo;
+- (NSTimeInterval) videoLength;
+
 @end

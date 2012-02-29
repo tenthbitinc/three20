@@ -277,9 +277,13 @@ static CGFloat kThumbnailRowHeight = 79.0f;
   [_delegate thumbsViewController:self didSelectPhoto:photo];
 
   BOOL shouldNavigate = YES;
-  if ([_delegate respondsToSelector:@selector(thumbsViewController:shouldNavigateToPhoto:)]) {
+  if ([_delegate respondsToSelector:@selector(thumbsViewController:shouldNavigateToPhoto:fromView:)]) {
+    shouldNavigate = [_delegate thumbsViewController:self shouldNavigateToPhoto:photo fromView:cell];
+
+  } else if ([_delegate respondsToSelector:@selector(thumbsViewController:shouldNavigateToPhoto:)]) {
     shouldNavigate = [_delegate thumbsViewController:self shouldNavigateToPhoto:photo];
   }
+
 
   if (shouldNavigate) {
     NSString* URL = [self URLForPhoto:photo];

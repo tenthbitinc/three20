@@ -79,10 +79,21 @@ static const CGFloat kDefaultThumbSize = 75.0f;
   if (photo) {
     thumbView.thumbURL = [photo URLForVersion:TTPhotoVersionThumbnail];
     thumbView.hidden = NO;
+    if ([photo respondsToSelector:@selector(isVideo)] && [photo isVideo]) {
+        NSTimeInterval videoLength = 0;
+        if ([photo respondsToSelector:@selector(videoLength)]) {
+            videoLength = [photo videoLength];
+        }
+        [thumbView setVideo:YES withTime:videoLength];
+
+    } else {
+        [thumbView setVideo:NO withTime:0];
+    }
 
   } else {
     thumbView.thumbURL = nil;
     thumbView.hidden = YES;
+    [thumbView setVideo:NO withTime:0];
   }
 }
 
